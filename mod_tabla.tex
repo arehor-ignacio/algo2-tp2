@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{xifthen}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+% ================= MACROS ================ %
+
+\newcommand*{\IntSeExplica}[1]{%
+    \textbf{se explica con}: \textsc{#1}%
+}
+
+\newcommand*{\IntGenero}[1]{%
+    \textbf{géneros}: \texttt{#1}%
+}
+
+\newcommand*{\IntTitulo}[1]{%
+    \noindent\textbf{\large #1}%
+}
+
+\newcommand*{\IntParametros}{%
+    \textbf{parámetros formales}%
+}
+
+\newcommand*{\RepSRC}[2]{%
+    \texttt{#1}  \textbf{se representa con} \texttt{#2}%
+}
+
+\newcommand{\IntFuncion}[8]{%
+    \textsc{#1}(#2)\ifthenelse{\isempty{#3}}{\empty}{ $\to$ $res$ : \texttt{#3}}%
+    \newline\indent\textbf{Pre} $\equiv$ \{#4\}%
+    \newline\indent\textbf{Post} $\equiv$ \{#5\}%
+    \newline\indent\textbf{Complejidad:} #6%
+    \newline\indent\textbf{Descripción:} #7%
+    \ifthenelse{\isempty{#8}}{\empty}{\newline\indent\textbf{Aliasing:} #8}%
+}
+
+\newcommand*{\IntIn}[2]{%
+    \textbf{in} \ensuremath{#1} : \texttt{#2}%
+}
+
+\newcommand*{\IntOut}[2]{%
+    \textbf{out} \ensuremath{#1} : \texttt{#2}%
+}
+
+\newcommand*{\IntInOut}[2]{%
+    \textbf{in/out} \ensuremath{#1} : \texttt{#2}%
+}
+
+\newcommand*{\obseq}{\ensuremath{=_{\mathrm{obs}}}\thinspace}
+
+\newcommand*{\wh}[1]{\ensuremath{\widehat{#1}}}
+
+\newcommand*{\tadf}[2]{#1\ifthenelse{\isempty{#2}}{\empty}{(\thinspace#2\thinspace)}}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+
+\newenvironment{Interfaz}{%
+    \noindent\textbf{\Large Interfaz}%
+    \parskip=2ex%
+}{}
+
+\newenvironment{Representacion}{%
+    \noindent\textbf{\Large Representación}%
+}{}
+
+\newenvironment{Algoritmos}{%
+    \noindent\textbf{\Large Algoritmos}%
+}{}
+
+\newcommand*{\dsq}{diccSeq(secu($\alpha$),\thinspace$\sigma$)}
+\newcommand*{\sq}{secu($\alpha$)}
+\newcommand*{\sth}[1]{\ensuremath{\Theta(\thinspace#1\thinspace)}}
+% ========================================= %
+
+\begin{document}
+
+\section{Módulo Tabla}
+
+\begin{Interfaz}
+
+    \IntSeExplica{Tabla}
+
+    \IntGenero{tabla}
+
+    \IntTitulo{Operaciones básicas de tabla}
+
+    \IntFuncion{Nueva}{\IntIn{cs}{conj(nombre\_campo)}, \IntIn{k}{nombre\_campo}}{tabla}{$k$ $\in$ $cs$}{$res$ \obseq \tadf{nueva}{$cs$, $k$}}{}{Crea una nueva tabla con los campos del conjunto $cs$, donde $k$ es el nombre el campo clave.}{}
+
+    \IntFuncion{Insertar}{\IntInOut{t}{tabla}, \IntIn{r}{registro}}{}{\wh{t} \obseq $t_0$ $\land$ \tadf{campos}{\wh{t}} \obseq \tadf{campos}{$r$}}{\wh{t} \obseq \tadf{insertar}{$t_0$, $r$}}{}{Agrega el registo $r$ a la tabla $t$. Si esta ya tiene un registro cuya clave sea igual a la clave de $r$, lo sobreescribe.}{}
+
+    \IntFuncion{Campos}{\IntIn{t}{tabla}}{conj(nombre\_tabla)}{true}{$res$ \obseq \tadf{campos}{\wh{t}}}{}{Devuelve el conjunto campos de la tabla.}{}
+
+\IntFuncion{Clave}{\IntIn{t}{tabla}}{nombre\_campo}{true}{$res$ \obseq \tadf{clave}{\wh{t}}}{}{Devuelve el nombre del campo clave de la tabla.}{}
+
+    \IntFuncion{Registros}{\IntIn{t}{tabla}}{conj(registro)}{true}{$res$ \obseq \tadf{registros}{\wh{t}}}{}{Devuelve el conjunto de registros de la tabla.}{}
+
+    \IntFuncion{Borrar}{\IntInOut{t}{tabla}, \IntIn{v}{valor}}{}{\wh{t} \obseq $t_0$}{\wh{t} \obseq \tadf{borrar}{$t_0$, $v$}}{}{Borra de la tabla $t$ aquel registro cuya clave sea igual a $v$.}{}
+
+\end{Interfaz}
+
+\begin{Representacion}
+
+    \RepSRC{tabla}{tbl} 
+
+    Rep: diccSeq(valor, registro) $\to$ bool
+
+    Rep(t) $\equiv$ true $\iff$ para todo v: valor $\land$ def?(v, d) $\to$ (luego) campos(obtener(v, d)) = campos y k = clave(obtener(v, d)).
+
+
+\end{Representacion}
+
+\begin{Algoritmos}
+
+\end{Algoritmos}
+
+\end{document}
