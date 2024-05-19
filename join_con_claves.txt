@@ -1,0 +1,48 @@
+procesarJoinConClaves(d, PRODCUT(FROM(t1), FROM(t2)), c1, c2){
+    if (tipoConsulta(SubConsulta1(PRODUCT)) == FROM && tipoConsulta(SubConsulta2(PRODUCT)) == FROM) {
+        tabla1 <-- obtener(t1, d);                          O(|t1|)
+        tabla2 <-- obtener(t2, d);                          O(|t2|)
+        if (clave(tabla1) == c1 && clave(tabla2) == c2) {   O(1)
+            if (#Entradas(t1) < #Entradas(t2)) {            O(1) Debemos guardarlo en la estructura de tabla
+                registros1 <-- Registros(tabla1);           O(1)
+                claves2 <-- Obtener(c2, tabla2);            O(|c2|)
+                for (r1: registro in registros1) {
+                    k1 <-- Clave(r1);               	    O(|c1|) ?
+                    if (Definido?(k1, claves2) {            O(|k1|)
+                        r2 <-- Obtener(k1, claves2);        O(|k1|)
+                        AgRápido(iProd(r1, r2), res);       O(Copy) ?
+                    }
+                }
+            } else /* Lo mismo pero para tabla2 */
+        } else /* PRODUCT Sin claves */
+    } else /* PRODUCT dos subconsultas FROM */
+}
+Complejidad : O(|t1| + |t2| + 1 + |c1| + |c2| + min(n1, n2)*|k1| + Complejidad(AgRápido(iProd(r1, r2), res))
+
+\State $tabla1 \gets$ \tadf{Obtener}{\tadf{NombreTabla}{\tadf{Subconsulta1}{\tadf{Subconsulta1}{q}} ,\tadf{Tablas}{d}}}
+\State $tabla2 \gets$ \tadf{Obtener}{\tadf{NombreTabla}{\tadf{Subconsulta2}{\tadf{Subconsulta1}{q}} ,\tadf{Tablas}{d}}}
+\If{}
+
+\If \#\tadf{Registros}{$t1$} < \#tadf{Registros}{$t2$}
+\State $itReg \gets$ \tadf{CrearIt}{\tadf{Registros}{t1}}
+        \While{\tadf{HaySiguiente?}{itReg}}
+        \State $r1 \gets$ Siguiente(itReg)
+        \State $clave \gets$ $r1[\tadf{Clave}{$t1$}]$
+            \If{\tadf{Definido?}{$clave$, Obtener(Clave($t2$), $t2$)}
+            \State $r2 \gets$ \tadf{Obtener}{$clave$, Obtener(Clave($t2$), $t2$)}
+            \State $cart \gets$ Productear($r1$, $r2$)
+            \State AgRápido($res$, $cart$)
+            \EndIf
+        \EndWhile
+\Else
+\State $itReg \gets$ \tadf{CrearIt}{\tadf{Registros}{t2}}
+        \While{\tadf{HaySiguiente?}{itReg}}
+        \State $r2 \gets$ Siguiente(itReg)
+        \State $clave \gets$ $r2[\tadf{Clave}{$t1$}]$
+            \If{\tadf{Definido?}{$clave$, Obtener(Clave($t1$), $t1$)}
+            \State $r1 \gets$ \tadf{Obtener}{$clave$, Obtener(Clave($t1$), $t1$)}
+            \State $cart \gets$ Productear($r1$, $r2$)
+            \State AgRápido($res$, $cart$)
+            \EndIf
+        \EndWhile
+\EndIf

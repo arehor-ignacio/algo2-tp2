@@ -3,6 +3,7 @@
 \usepackage{xifthen}
 \usepackage{mathtools}
 \usepackage{enumitem}
+\usepackage{algorithmicx, algpseudocode, algorithm}
 
 % ================= MACROS ================ %
 
@@ -71,6 +72,7 @@
 \newcommand*{\dsq}{diccSeq(secu($\alpha$),\thinspace$\sigma$)}
 \newcommand*{\sq}{secu($\alpha$)}
 \newcommand*{\sth}[1]{\ensuremath{\Theta(\thinspace#1\thinspace)}}
+\newcommand*{\tuple}[1]{\ensuremath{\langle\thinspace#1\thinspace\rangle}}
 % ========================================= %
 
 \begin{document}
@@ -115,6 +117,21 @@
 \end{Representacion}
 
 \begin{Algoritmos}
+
+    \begin{algorithm}[H]{\textbf{iNueva}(\IntIn{cs}{conj(nombre\_campo)}, \IntIn{k}{nombre\_campo}) $\to$ $res$ : tbl}
+        \begin{algorithmic}[1]
+        \State $itCampos$ $\gets$ crearIt($cs$)                 \Comment{\sth{1}}
+        \State $dic$ $\gets$ Vacío()
+        \While{HaySiguiente?($itCampos$)}
+        \State Definir($dic$, Siguiente($itCampos$), Vacío())   \Comment{$\Theta({\abs{c}})$}
+        \EndWhile
+        \State $regs$ $\gets$ Vacío()
+        \State $res$ $\gets$ \tuple{dic, regs, k}               \Comment{\sth{1}}
+
+        \medskip
+        \State \underline{Complejidad:} \sth{n*\abs{c}}
+        \end{algorithmic}
+    \end{algorithm}
 
 \end{Algoritmos}
 
